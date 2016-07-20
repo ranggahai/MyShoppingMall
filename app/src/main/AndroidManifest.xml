@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ProdukActivity" />
-        <activity android:name=".DetilProdukActivity"></activity>
+        <activity android:name=".DetilProdukActivity" />
+        <activity android:name=".DetilImageActivity"></activity>
     </application>
 
 </manifest>
