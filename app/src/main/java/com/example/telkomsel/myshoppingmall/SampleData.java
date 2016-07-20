@@ -19,4 +19,11 @@ public class SampleData {
                     "Rp 589.000"},
     };
 
+    public static String[] thumbnails = new String[] {
+            "http://bro.do/5888-product_list_default/sepatu-signore-full-black.jpg",
+            "https://s4.bukalapak.com/img/451960582/medium/_Sepatu_Running_Sport_Adidas_Casual_Zx_750_A__Black_red.jpg",
+            "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQzACicEYBDGFmv8W85LpBcU0ELkEm80E0rwwbMqXq8pNdyevnUyA",
+            "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSUazlAiJfY-dB5YhPKiu8w_qO11mED86WSL_wIBITbfChVOj_3LQ"
+    };
+
 }
