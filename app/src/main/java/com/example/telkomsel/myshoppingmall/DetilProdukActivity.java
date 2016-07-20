@@ -1,5 +1,6 @@
 package com.example.telkomsel.myshoppingmall;
 
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 public class DetilProdukActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tv_name_detail;
@@ -23,6 +26,8 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
     private TextView tv_harga_detail;
     private TextView tv_desc;
 
+    private int currentImagePos = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,9 +36,11 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
         tv_name_detail = (TextView)findViewById(R.id.tv_nama_detail);
         tv_harga_detail = (TextView)findViewById(R.id.tv_harga_detail);
         spinner_ukuran = (Spinner)findViewById(R.id.spinner_ukuran);
-        img_detail = (ImageView)findViewById(R.id.img_detail);
         btn_addchart = (Button)findViewById(R.id.btn_addchart);
         tv_desc = (TextView)findViewById(R.id.tv_desc);
+
+        img_detail = (ImageView)findViewById(R.id.img_detail);
+        img_detail.setOnClickListener(this);
 
         thumb1 = (ImageView)findViewById(R.id.thumb1);
         thumb2 = (ImageView)findViewById(R.id.thumb2);
@@ -85,15 +92,29 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()){
             case R.id.thumb1:
                 Glide.with(DetilProdukActivity.this).load(SampleData.thumbnails[0]).into(img_detail);
+                currentImagePos = 0;
                 break;
             case R.id.thumb2:
                 Glide.with(DetilProdukActivity.this).load(SampleData.thumbnails[1]).into(img_detail);
+                currentImagePos = 1;
                 break;
             case R.id.thumb3:
                 Glide.with(DetilProdukActivity.this).load(SampleData.thumbnails[2]).into(img_detail);
+                currentImagePos = 2;
                 break;
             case R.id.thumb4:
                 Glide.with(DetilProdukActivity.this).load(SampleData.thumbnails[3]).into(img_detail);
+                currentImagePos = 3;
+                break;
+            case R.id.img_detail:
+                ArrayList<String> list = new ArrayList<>();
+                for(int i=0 ; i<SampleData.thumbnails.length; i++){
+                    list.add(SampleData.thumbnails[i]);
+                }
+                Intent intent = new Intent(DetilProdukActivity.this, DetilImageActivity.class);
+                intent.putExtra("url_images",list);
+                intent.putExtra("position",currentImagePos);
+                startActivity(intent);
                 break;
         }
     }

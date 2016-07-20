@@ -10,9 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener {
+public class CategoryActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
     private ListView lvKategori;
     private String[] categories = new String[]{
@@ -26,12 +24,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
         lvKategori = (ListView)findViewById(R.id.lv_kategoribarang);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CategoryActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, categories);
 
         // Assign adapter to ListView
         lvKategori.setAdapter(adapter);
         lvKategori.setOnItemClickListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -41,8 +41,15 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         // Show Alert
         Toast.makeText(getApplicationContext(), itemValue , Toast.LENGTH_LONG)
                 .show();
-        Intent intent = new Intent(MainActivity.this, ProdukActivity.class);
+        Intent intent = new Intent(CategoryActivity.this, ProdukActivity.class);
         startActivity(intent);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

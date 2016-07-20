@@ -12,6 +12,8 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         tools:context="com.example.telkomsel.myshoppingmall.RegisterActivity">
 
         <ImageView
@@ -25,14 +27,14 @@
             android:layout_marginBottom="16dp"
             android:singleLine="true"
             android:hint="Username"
-            android:id="@+id/et_name"/>
+            android:id="@+id/et_name_reg"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:singleLine="true"
             android:hint="Password"
-            android:id="@+id/et_pass"/>
+            android:id="@+id/et_pass_reg"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +42,7 @@
             android:singleLine="true"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:id="@+id/et_email"/>
+            android:id="@+id/et_email_reg"/>
         <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
