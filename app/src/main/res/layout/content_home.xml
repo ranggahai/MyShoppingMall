@@ -12,4 +12,16 @@
     tools:context="com.example.telkomsel.myshoppingmall.HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
+    <ProgressBar
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/progress_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_item"
+        android:cacheColorHint="@android:color/transparent"></ListView>
+
 </RelativeLayout>

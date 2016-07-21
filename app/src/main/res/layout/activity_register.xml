@@ -34,6 +34,7 @@
             android:layout_marginBottom="16dp"
             android:singleLine="true"
             android:hint="Password"
+            android:inputType="textPassword"
             android:id="@+id/et_pass_reg"/>
         <EditText
             android:layout_width="match_parent"
@@ -53,7 +54,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/but_login"
+            android:id="@+id/but_register"
             android:layout_marginBottom="16dp"
             android:text="Register"/>
 

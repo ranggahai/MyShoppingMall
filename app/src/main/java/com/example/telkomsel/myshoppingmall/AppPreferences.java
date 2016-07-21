@@ -11,7 +11,7 @@ public class AppPreferences {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private String PRFS_NAME = "Dota2Mall";
-    private String KEY_USERNAME = "USERNAME";
+    private String KEY_USERID = "USERID";
 
     public AppPreferences(Context context){
         this.context = context;
@@ -19,14 +19,16 @@ public class AppPreferences {
         editor = sharedPreferences.edit();
     }
 
-    public void setUsername(String u){
-        editor.putString(KEY_USERNAME,u);
+    public void setUserid(String u){
+        editor.putString(KEY_USERID,u);
         editor.commit();
     }
 
-    public String getUsername(){
-        return sharedPreferences.getString(KEY_USERNAME,"");
+    public String getUserid(){
+        return sharedPreferences.getString(KEY_USERID,"");
     }
+
+
 
     public void clear(){
         editor.clear();
