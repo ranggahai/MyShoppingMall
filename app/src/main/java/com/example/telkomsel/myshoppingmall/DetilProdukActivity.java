@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.telkomsel.myshoppingmall.db.CartHelper;
+import com.example.telkomsel.myshoppingmall.db.CartItem;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,12 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
     private Spinner spinner_ukuran;
     private TextView tv_harga_detail;
     private TextView tv_desc;
+    private CartHelper cartHelper;
+
+    private TextView tvTitle, tvCart;
+    private ImageView imgCart;
+
+    private Produk selectedProduk;
 
     private int currentImagePos = 0;
 
@@ -32,16 +42,24 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detil_produk);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+
+        selectedProduk = getIntent().getParcelableExtra("produk");
 
         tv_name_detail = (TextView)findViewById(R.id.tv_nama_detail);
         tv_harga_detail = (TextView)findViewById(R.id.tv_harga_detail);
         spinner_ukuran = (Spinner)findViewById(R.id.spinner_ukuran);
         btn_addchart = (Button)findViewById(R.id.btn_addchart);
         tv_desc = (TextView)findViewById(R.id.tv_desc);
-
         img_detail = (ImageView)findViewById(R.id.img_detail);
-        img_detail.setOnClickListener(this);
+        tvTitle = (TextView)findViewById(R.id.Title);
+        tvCart = (TextView)findViewById(R.id.tv_cart);
+        imgCart = (ImageView)findViewById(R.id.img_cart);
+        imgCart.setOnClickListener(this);
 
+        cartHelper = new CartHelper(this);
+
+        img_detail.setOnClickListener(this);
         thumb1 = (ImageView)findViewById(R.id.thumb1);
         thumb2 = (ImageView)findViewById(R.id.thumb2);
         thumb3 = (ImageView)findViewById(R.id.thumb3);
@@ -50,8 +68,10 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
         thumb2.setOnClickListener(this);
         thumb3.setOnClickListener(this);
         thumb4.setOnClickListener(this);
+        btn_addchart.setOnClickListener(this);
 
-        getSupportActionBar().setTitle("Detail Produk");
+        setSupportActionBar(toolbar);
+        tvTitle.setText("Detail Produk");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Produk dProduk = getIntent().getParcelableExtra("produk");
@@ -116,6 +136,38 @@ public class DetilProdukActivity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("position",currentImagePos);
                 startActivity(intent);
                 break;
+            case R.id.btn_addchart:
+                if(cartHelper.isItemAlreadyExist((int) selectedProduk.getId())){
+                    Toast.makeText(DetilProdukActivity.this, "This product is already in cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    cartHelper.create((int)selectedProduk.getId(), selectedProduk.getNama(), selectedProduk.getImageUrl(),1,Double.parseDouble(selectedProduk.getHarga()));
+                    Toast.makeText(DetilProdukActivity.this, "This product is successfully added into cart", Toast.LENGTH_SHORT).show();
+                }
+                updateCartQty();
+                break;
+            case R.id.img_cart:
+                intent = new Intent(DetilProdukActivity.this, CartActivity.class);
+                startActivity(intent);
+                break;
         }
+    }
+
+    public void updateCartQty(){
+        ArrayList<CartItem> list = new ArrayList<>();
+        CartHelper cartHelper = new CartHelper(this);
+        list = cartHelper.getAll();
+        if(list.size()>0){
+            int totalQty = list.size();
+            tvCart.setVisibility(View.VISIBLE);
+            tvCart.setText(String.valueOf(totalQty));
+        } else {
+            tvCart.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartQty();
     }
 }

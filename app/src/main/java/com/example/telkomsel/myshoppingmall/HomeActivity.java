@@ -16,18 +16,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.telkomsel.myshoppingmall.api.request.GetAllProductRequest;
+import com.example.telkomsel.myshoppingmall.db.CartHelper;
+import com.example.telkomsel.myshoppingmall.db.CartItem;
 
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         GetAllProductRequest.OnGetAllProductRequestListener,
-        AdapterView.OnItemClickListener{
+        AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ListView lvItem;
     private ProgressBar progressBar;
@@ -36,15 +40,25 @@ public class HomeActivity extends AppCompatActivity
     private GetAllProductRequest getAllProductRequest;
     private ArrayList<Produk> listItem;
 
+    private TextView tvTitle, tvCart;
+    private ImageView imgCart;
+    private CartHelper cartHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         lvItem = (ListView)findViewById(R.id.lv_item);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        tvTitle = (TextView)findViewById(R.id.Title);
+        tvCart = (TextView)findViewById(R.id.tv_cart);
+        imgCart = (ImageView)findViewById(R.id.img_cart);
+        cartHelper = new CartHelper(this);
+
+        imgCart.setOnClickListener(this);
 
         produkAdapter = new ProdukAdapter(HomeActivity.this);
         listItem = new ArrayList<>();
@@ -79,12 +93,6 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -169,6 +177,37 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent;
+        intent = new Intent(HomeActivity.this, DetilProdukActivity.class);
+        intent.putExtra("produk",listItem.get(position));
+        startActivity(intent);
+    }
 
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.img_cart){
+            Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    public void updateCartQty(){
+        ArrayList<CartItem> list = new ArrayList<>();
+        CartHelper cartHelper = new CartHelper(this);
+        list = cartHelper.getAll();
+        if(list.size()>0){
+            int totalQty = list.size();
+            tvCart.setVisibility(View.VISIBLE);
+            tvCart.setText(String.valueOf(totalQty));
+        } else {
+            tvCart.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartQty();
     }
 }
